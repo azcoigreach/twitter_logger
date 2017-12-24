@@ -1,6 +1,7 @@
 FROM python:2.7.14-jessie
 
 WORKDIR /usr/src/app
+RUN chmod +x /usr/src/app
 
 COPY requirements.txt ./
 
