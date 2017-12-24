@@ -18,4 +18,6 @@ x86 build
 docker run -tdi --restart unless-stopped -v D:/apps/twitter_logger:/usr/src/app --name twitter_logger twitter_logger
 ```
 
+* TODO
 
+    - /app directory not copying to shared volumes on Windows.  Permissions issues. Need to correct.  Manual copy required to windows share for config.py and twitter_logger.py
