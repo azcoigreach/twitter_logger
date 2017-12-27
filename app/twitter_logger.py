@@ -10,6 +10,8 @@ from tweepy import Stream
 from tweepy import OAuthHandler
 from tweepy.streaming import StreamListener
 import time
+from datetime import datetime
+import dateutil.parser
 import argparse
 import string
 import config
@@ -39,10 +41,11 @@ class StreamListener(tweepy.StreamListener):
             db = client.twitter_stream
             datajson = json.loads(data)
             if not datajson['text'].startswith('RT'):
-                created_at = datajson['created_at']
+                iso_date = dateutil.parser.parse(datajson['created_at'])
+                datajson['created_at'] = iso_date
                 tweet_text = datajson['text'].encode('utf-8')
                 db.twitter_query.insert(datajson)
-                logger.info("Tweet collected at " + str(created_at) + str(tweet_text))
+                logger.info("Tweet collected at " + str(iso_date.strftime('%a %b %d %H:%M:%S +0000 %Y')) + str(tweet_text))
                 
         except Exception as err:
            logger.error('Stream Error: %s', err)
