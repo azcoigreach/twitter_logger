@@ -18,8 +18,10 @@ import config
 import json
 from pymongo import MongoClient
 import logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger('TWITTER LOGGER')
+import coloredlogs
+from colorama import init, Fore
+coloredlogs.install(level='DEBUG')
+logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
 MONGO_SERVER= str(config.MONGO_HOST + '/' + config.MONGO_DB)
@@ -29,10 +31,10 @@ WORDS = config.STREAM_FILTER
 class StreamListener(tweepy.StreamListener):    
  
     def on_connect(self):
-        logger.warning("You are now connected to the streaming API.")
+        logger.warning(Fore.YELLOW + "You are now connected to the streaming API.")
  
     def on_error(self, status_code):
-        logger.error('An Error has occured: ' + repr(status_code))
+        logger.error(Fore.RED 'An Error has occured: ' + repr(status_code))
         return False
  
     def on_data(self, data):
@@ -45,10 +47,10 @@ class StreamListener(tweepy.StreamListener):
                 datajson['created_at'] = iso_date
                 tweet_text = datajson['text'].encode('utf-8')
                 db.twitter_query.insert(datajson)
-                logger.info("Tweet collected at " + str(iso_date.strftime('%a %b %d %H:%M:%S +0000 %Y')) + str(tweet_text))
+                logger.info(Fore.CYAN + "Tweet collected at " + str(iso_date.strftime('%a %b %d %H:%M:%S +0000 %Y')) + str(tweet_text))
                 
         except Exception as err:
-           logger.error('Stream Error: %s', err)
+           logger.error(Fore.RED + 'Stream Error: %s', err)
            
 
 
@@ -58,13 +60,13 @@ while True:
         auth.set_access_token(config.access_token, config.access_secret)
         listener = StreamListener(api=tweepy.API(wait_on_rate_limit=True)) 
         streamer = tweepy.Stream(auth=auth, listener=listener)
-        logger.warning("Tracking: " + str(WORDS))
+        logger.warning(Fore.YELLOW + "Tracking: " + str(WORDS))
         streamer.filter(track=WORDS)
     except KeyboardInterrupt:
-        logger.error('exiting...')
+        logger.error(Fore.RED + 'exiting...')
         sys.exit(-1)
     except Exception as err:
-        logger.error("Error main: %s", err)
+        logger.error(Fore.RED + "Error main: %s", err)
         time.sleep(5)
         continue
     
