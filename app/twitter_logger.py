@@ -34,7 +34,7 @@ class StreamListener(tweepy.StreamListener):
         logger.warning(Fore.YELLOW + "You are now connected to the streaming API.")
  
     def on_error(self, status_code):
-        logger.error(Fore.RED 'An Error has occured: ' + repr(status_code))
+        logger.error(Fore.RED + 'An Error has occured: ' + repr(status_code))
         return False
  
     def on_data(self, data):
