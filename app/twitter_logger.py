@@ -21,7 +21,7 @@ import logging
 import coloredlogs
 from colorama import init, Fore
 coloredlogs.install(level='DEBUG')
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('TWITTER LOGGER')
 logger.setLevel(logging.INFO)
 
 MONGO_SERVER= str(config.MONGO_HOST + '/' + config.MONGO_DB)
@@ -47,7 +47,7 @@ class StreamListener(tweepy.StreamListener):
                 datajson['created_at'] = iso_date
                 tweet_text = datajson['text'].encode('utf-8')
                 db.twitter_query.insert(datajson)
-                logger.info(Fore.CYAN + "Tweet collected at " + str(iso_date.strftime('%a %b %d %H:%M:%S +0000 %Y')) + str(tweet_text))
+                logger.info(Fore.CYAN + "Tweet collected at " + str(iso_date.strftime('%a %b %d %H:%M:%S +0000 %Y')) + Fore.LIGHTCYAN_EX + ' ' + str(tweet_text))
                 
         except Exception as err:
            logger.error(Fore.RED + 'Stream Error: %s', err)
