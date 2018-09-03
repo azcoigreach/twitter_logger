@@ -51,7 +51,7 @@ class StreamListener(tweepy.StreamListener):
                 analysis = TextBlob(tweet_text)
                 sentiment_polarity = analysis.sentiment.polarity
                 sentiment_subjectivity = analysis.sentiment.subjectivity
-                datajson['sentiment'].append(dict(polarity=sentiment_polarity, subjectivity=sentiment_subjectivity))
+                datajson['sentiment'] = dict(polarity=sentiment_polarity, subjectivity=sentiment_subjectivity)
                 # logger.info(datajson['sentiment'])
                 # datajson['sentiment']['subjectivity'] = sentiment_subjectivity
                 db.twitter_query.insert(datajson)

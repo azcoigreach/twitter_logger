@@ -15,7 +15,7 @@ x86 build
 * RUN
 
 ```
-docker run -tdi --restart unless-stopped -v D:/apps/twitter_logger:/usr/src/app --log-driver json-file --log-opt max-size=20m --name twitter_logger twitter_logger
+docker run -tdi --restart unless-stopped -v D:/apps/twitter_logger:/usr/src/app/twitter_logger/app --log-driver json-file --log-opt max-size=20m --name twitter_logger twitter_logger
 ```
 
 * TODO
