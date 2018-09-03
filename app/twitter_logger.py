@@ -56,8 +56,8 @@ class StreamListener(tweepy.StreamListener):
                 # datajson['sentiment']['subjectivity'] = sentiment_subjectivity
                 db.twitter_query.insert(datajson)
                 logger.info(Fore.CYAN + "Tweet collected at " + str(iso_date.strftime('%a %b %d %H:%M:%S +0000 %Y')) + Fore.LIGHTCYAN_EX + ' ' + 
-                            tweet_text + ' Pol:' + float(datajson['sentiment']['polarity']) + 
-                            ' Sen:' + float(datajson['sentiment']['subjectivity'])
+                            tweet_text + ' Pol:' + str(float(datajson['sentiment']['polarity'])) + 
+                            ' Sen:' + str(float(datajson['sentiment']['subjectivity']))
                             )
                 
         except Exception as err:
