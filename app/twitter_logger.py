@@ -51,8 +51,8 @@ class StreamListener(tweepy.StreamListener):
                 analysis = TextBlob(tweet_text)
                 sentiment_polarity = analysis.sentiment.polarity
                 sentiment_subjectivity = analysis.sentiment.subjectivity
-                datajson['sentiment']['polarity'] = sentiment_polarity
-                datajson['sentiment']['subjectivity'] = sentiment_subjectivity
+                datajson['sentiment'].append(dict(polarity=sentiment_polarity, subjectivity=sentiment_subjectivity)
+                # datajson['sentiment']['subjectivity'] = sentiment_subjectivity
                 db.twitter_query.insert(datajson)
                 logger.info(Fore.CYAN + "Tweet collected at " + str(iso_date.strftime('%a %b %d %H:%M:%S +0000 %Y')) + Fore.LIGHTCYAN_EX + ' ' + str(tweet_text))
                 
