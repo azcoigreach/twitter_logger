@@ -17,6 +17,8 @@ import string
 import config
 import json
 from pymongo import MongoClient
+from unidecode import unidecode
+from textblob import TextBlob
 import logging
 import coloredlogs
 from colorama import init, Fore
@@ -45,7 +47,12 @@ class StreamListener(tweepy.StreamListener):
             if not datajson['text'].startswith('RT'):
                 iso_date = dateutil.parser.parse(datajson['created_at'])
                 datajson['created_at'] = iso_date
-                tweet_text = datajson['text'].encode('utf-8')
+                tweet_text = unidecode(datajson['text'])
+                analysis = TextBlob(tweet)
+                datajson = analysis.sentiment.polarity
+                sentiment_subjectivity = analysis.sentiment.subjectivity
+                datajson['sentiment']['polarity'] = sentiment_polarity
+                datajson['sentiment']['subjectivity'] = sentiment_subjectivity
                 db.twitter_query.insert(datajson)
                 logger.info(Fore.CYAN + "Tweet collected at " + str(iso_date.strftime('%a %b %d %H:%M:%S +0000 %Y')) + Fore.LIGHTCYAN_EX + ' ' + str(tweet_text))
                 
