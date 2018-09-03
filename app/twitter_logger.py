@@ -48,7 +48,7 @@ class StreamListener(tweepy.StreamListener):
                 iso_date = dateutil.parser.parse(datajson['created_at'])
                 datajson['created_at'] = iso_date
                 tweet_text = unidecode(datajson['text'])
-                analysis = TextBlob(tweet)
+                analysis = TextBlob(tweet_text)
                 datajson = analysis.sentiment.polarity
                 sentiment_subjectivity = analysis.sentiment.subjectivity
                 datajson['sentiment']['polarity'] = sentiment_polarity
