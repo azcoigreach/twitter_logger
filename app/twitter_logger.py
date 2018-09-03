@@ -47,7 +47,13 @@ class StreamListener(tweepy.StreamListener):
             if not datajson['text'].startswith('RT'):
                 iso_date = dateutil.parser.parse(datajson['created_at'])
                 datajson['created_at'] = iso_date
-                tweet_text = unidecode(datajson['text'])
+                
+                try: 
+                    tweet_text = unidecode(datajson['text'])
+                except:
+                    logger.warning(Fore.LIGHTRED_EX + 'Charecter skipped.')
+                    pass
+
                 analysis = TextBlob(tweet_text)
                 sentiment_polarity = analysis.sentiment.polarity
                 sentiment_subjectivity = analysis.sentiment.subjectivity
